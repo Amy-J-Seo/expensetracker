@@ -59,10 +59,16 @@ export default {
   transition: all 0.3s ease;
   font-family: Helvetica, Arial, sans-serif;
 }
-
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+}
 .modal-header h3 {
   margin-top: 0;
   color: #42b983;
+}
+.modal-header button {
+  float: right;
 }
 
 .modal-body {
