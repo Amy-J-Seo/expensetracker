@@ -4,97 +4,276 @@
       <p class="card__exit"><i class="times-circle"></i></p>
       <div class="card__title">
         <h2>Track your expense and income</h2>
-
         <div class="main_category">
           <label for="expense">
-            <input type="radio" name="category" id="expense" value="expense" />
+            <input
+              type="radio"
+              name="form.type"
+              id="expense"
+              value="expense"
+              v-model="form.type"
+              @change="checkTypeHandler"
+            />
             Expense
           </label>
           <label for="income">
-            <input type="radio" name="category" id="income" value="income" />
+            <input
+              type="radio"
+              name="form.type"
+              id="income"
+              value="income"
+              v-model="form.type"
+              @change="checkTypeHandler"
+            />
             Income
           </label>
         </div>
-        <div class="sub_category">
+        <!-- expenseCategory -->
+        <div class="sub_category" v-if="showExpenseCategory">
           <label for="shopping">
             <input
               type="radio"
-              name="subcategory"
+              name="form.category"
               id="shopping"
               value="shopping"
+              v-model="form.category"
             />
             Shopping
           </label>
           <label for="eatout">
-            <input type="radio" name="subcategory" id="eatout" value="eatout" />
+            <input
+              type="radio"
+              name="form.category"
+              id="eatout"
+              value="eatout"
+              v-model="form.category"
+            />
             Eat out
           </label>
           <label for="grocery">
             <input
               type="radio"
-              name="subcategory"
+              name="form.category"
               id="grocery"
               value="eatgroceryout"
+              v-model="form.category"
             />
             Grocery
           </label>
           <label for="transportation">
             <input
               type="radio"
-              name="subcategory"
+              name="form.category"
               id="transportation"
               value="transportation"
+              v-model="form.category"
             />
             Transportation
           </label>
+          <br />
           <label for="education">
             <input
               type="radio"
-              name="subcategory"
+              name="form.category"
               id="education"
               value="education"
+              v-model="form.category"
             />
             Education
           </label>
           <label for="culture">
             <input
               type="radio"
-              name="subcategory"
+              name="form.category"
               id="culture"
               value="culture"
+              v-model="form.category"
             />
             Culture
           </label>
         </div>
+        <!-- end of expenseCategory -->
+
+        <!-- income category -->
+        <div class="sub_category" v-if="!showExpenseCategory">
+          <label for="salary">
+            <input
+              type="radio"
+              name="form.category"
+              id="salary"
+              value="salary"
+              v-model="form.category"
+            />
+            Salary
+          </label>
+          <label for="present">
+            <input
+              type="radio"
+              name="form.category"
+              id="present"
+              value="present"
+              v-model="form.category"
+            />
+            Present
+          </label>
+          <label for="pocketmoney">
+            <input
+              type="radio"
+              name="form.category"
+              id="pocketmoney"
+              value="pocketmoney"
+              v-model="form.category"
+            />
+            Pocket money
+          </label>
+          <label for="withdraw">
+            <input
+              type="radio"
+              name="form.category"
+              id="withdraw"
+              value="withdraw"
+              v-model="form.category"
+            />
+            Withdraw from bank
+          </label>
+        </div>
+        <!-- end of income category -->
+
+        <div>
+          <input type="date" v-model="form.date" />
+        </div>
         <div>
           <label for="amount">
             $
-            <input type="text" />
+            <input
+              type="text"
+              v-model="form.amount"
+              @input="changeInput($event)"
+              @change="changeInput($event)"
+            />
           </label>
+          <div v-if="!isEditing">
+            <p v-if="!isAmountValid">Please Enter a number</p>
+          </div>
         </div>
         <div>
-          <textarea name="memo" id="memo" cols="30" rows="5">Add memo</textarea>
+          <textarea
+            name="memo"
+            id="memo"
+            cols="30"
+            rows="2"
+            v-model="form.memo"
+          >
+Add memo</textarea
+          >
         </div>
       </div>
-      <div class="card__apply">
-        <button>
+      <div class="card__apply" :class="{ hideBtn: !isAmountValid }">
+        <button @click="addSpendingHandler">
           <font-awesome-icon icon="money-bill-wave" />
+        </button>
+      </div>
+      <div class="card__apply" v-if="isEditing">
+        <button @click="updateSpendingHandler">
+          <font-awesome-icon icon="redo-alt" />
         </button>
       </div>
     </div>
   </div>
 </template>
+
 <script>
+import { mapActions, mapState } from "vuex";
+
 export default {
   name: "ExpenseEnterForm",
   components: {},
+  props: ["formIsVisible", "data", "isEditing"],
   data() {
-    return {};
+    return {
+      form: {
+        no: 0,
+        type: this.data.type,
+        category: this.data.category,
+        date: this.data.date,
+        amount: this.data.amount,
+        memo: this.data.memo,
+      },
+      isAmountValid: false,
+      regex: /[0-9]/,
+      showExpenseCategory: true,
+    };
   },
-  computed: {},
-  methods: {},
-  created: {},
+  computed: {
+    ...mapState("trackingStore", ["totalList", "listLength"]),
+  },
+  methods: {
+    ...mapActions("trackingStore", [
+      "fetchSpendingList",
+      "addSpendItem",
+      "updateSpendItem",
+    ]),
+    checkTypeHandler() {
+      if (this.form.type === "expense") {
+        this.showExpenseCategory = true;
+      }
+      if (this.form.type === "income") {
+        this.showExpenseCategory = false;
+      }
+    },
+    addSpendingHandler() {
+      const dataToAdd = {
+        no: this.listLength + 1,
+        type: this.form.type,
+        category: this.form.category,
+        date: this.form.date,
+        amount: this.form.amount,
+        memo: this.form.memo,
+      };
+      this.addSpendItem(dataToAdd);
+      alert("Successfully saved!");
+      this.$emit("formIsVisibleUpdate", (this.formIsVisible = false));
+
+      this.form.type = "";
+      this.form.category = "";
+      this.form.date = "";
+      this.form.amount = "";
+      this.form.memo = "";
+    },
+    changeInput: function (e) {
+      const number = e.target.value;
+      this.isNumberValid(number);
+    },
+    isNumberValid: function (inputNumber) {
+      this.isAmountValid = this.regex.test(inputNumber);
+      //it is still true on ddfs3
+    },
+    updateSpendingHandler() {
+      const dataToUpdate = {
+        id: this.data.id,
+        type: this.form.type,
+        category: this.form.category,
+        date: this.form.date,
+        amount: this.form.amount,
+        memo: this.form.memo,
+      };
+      this.updateSpendItem(dataToUpdate);
+
+      console.log(this.form.type);
+      this.form.type = "";
+      console.log(this.form.type);
+      this.form.category = "";
+      this.form.date = "";
+      this.form.amount = "";
+      this.form.memo = "";
+
+      this.$emit("formIsVisibleUpdate", (this.formIsVisible = false));
+    },
+  },
   watch: {},
+  created() {
+    this.fetchSpendingList();
+  },
 };
 </script>
 <style scoped>
@@ -121,7 +300,6 @@ export default {
   width: 60%;
   min-height: 200px;
   display: grid;
-  grid-template-rows: 20px 50px 1fr 50px;
   border-radius: 10px;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
   transition: all 0.2s;
@@ -156,18 +334,15 @@ export default {
 }
 
 .card__exit {
-  grid-row: 1/2;
   justify-self: end;
 }
 
 .card__title {
-  grid-row: 3/4;
   font-weight: 400;
   color: #727272;
 }
 
 .card__apply {
-  grid-row: 4/5;
   align-self: center;
 }
 .card__apply button {
@@ -177,5 +352,9 @@ export default {
 
 .card-1 {
   background-color: rgb(233, 233, 233);
+}
+
+.hideBtn {
+  display: none;
 }
 </style>

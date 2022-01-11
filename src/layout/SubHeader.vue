@@ -1,9 +1,8 @@
 <template>
   <div class="sub__header">
-    <router-link to="/dashboard">DashBoard</router-link>
-    <router-link to="/expenseEnterForm">Expense Enter Form</router-link>
-    <router-link to="/dataTable">Spending History</router-link>
-    <router-link to="/setting">Setting</router-link>
+    <!-- <router-link to="/dashboard">DashBoard</router-link> -->
+    <router-link to="/dataTable">Spending and income</router-link>
+    <router-link to="/summary">Summary</router-link>
   </div>
 </template>
 <script>

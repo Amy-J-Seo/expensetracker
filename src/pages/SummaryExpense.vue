@@ -2,34 +2,59 @@
   <div>
     <h3></h3>
     <div class="cards">
-      <div class="card card-1">
+      <div class="card card-3">
         <div class="card__icon"><i class="fas fa-bolt"></i></div>
         <p class="card__exit"><i class="fas fa-times"></i></p>
         <div class="card__title">
-          <h3>This is summary expense of the month</h3>
-          <p>$ {{ amount }}</p>
+          <h2>This is summary expense of the month</h2>
 
           <div class="detail_summary">
-            <p><span>Total Income :</span> $ {{ amount }}</p>
-            <p><span>Total Expense :</span>$ {{ amount }}</p>
+            <p><span>Total Income :</span> $ {{ totalIncome }}</p>
+            <p><span>Total Expense :</span>$ {{ totalExpense }}</p>
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 <script>
+import { mapState, mapActions } from "vuex";
 export default {
   name: "SummaryExpense",
   components: {},
   data() {
-    return {
-      amount: 1000,
-    };
+    return {};
   },
-  computed: {},
-  methods: {},
-  created: {},
+  computed: {
+    ...mapState("trackingStore", ["totalList"]),
+    totalExpense() {
+      let total = 0;
+      this.totalList.map((item) => {
+        if (item.type === "expense") {
+          total = total + parseInt(item.amount);
+        }
+        console.log(total);
+      });
+      return total;
+    },
+    totalIncome() {
+      let total = 0;
+      this.totalList.map((item) => {
+        if (item.type === "income") {
+          total = total + parseInt(item.amount);
+        }
+        console.log(total);
+      });
+      return total;
+    },
+  },
+  methods: {
+    ...mapActions("trackingStore", ["fetchSpendingList"]),
+  },
+  created() {
+    this.fetchSpendingList();
+  },
   watch: {},
 };
 </script>
@@ -99,6 +124,6 @@ export default {
   align-self: center;
 }
 .card-3 {
-  background: radial-gradient(#76b2fe, #b69efe);
+  background-color: lavender;
 }
 </style>

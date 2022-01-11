@@ -9,6 +9,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import ExpenseEnterForm from "./ExpenseEnterForm.vue";
 import DataTable from "./DataTable.vue";
@@ -25,7 +26,7 @@ export default {
   },
   computed: {},
   methods: {},
-  created: {},
+  created() {},
   watch: {},
 };
 </script>

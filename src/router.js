@@ -6,13 +6,13 @@ Vue.use(VueRouter);
 import DashBoard from "./pages/DashBoard.vue";
 import ExpenseEnterForm from "./pages/ExpenseEnterForm.vue";
 import DataTable from "./pages/DataTable.vue";
-import UserSetting from "./pages/UserSetting.vue";
+import Summary from "./pages/SummaryExpense.vue";
 
 const routes = [
   { path: "/dashboard", component: DashBoard },
   { path: "/expenseEnterForm", component: ExpenseEnterForm },
   { path: "/dataTable", component: DataTable },
-  { path: "/setting", component: UserSetting },
+  { path: "/summary", component: Summary },
 ];
 const router = new VueRouter({
   mode: "history",
