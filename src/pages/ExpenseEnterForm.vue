@@ -206,9 +206,9 @@ export default {
   },
   computed: {
     ...mapState("trackingStore", ["totalList", "listLength"]),
-    ...mapGetters("loginStore", ["getUniqueId"]),
   },
   methods: {
+    ...mapGetters("loginStore", ["getUniqueId"]),
     ...mapActions("trackingStore", [
       "fetchSpendingList",
       "addSpendItem",
@@ -224,7 +224,7 @@ export default {
     },
     addSpendingHandler() {
       const dataToAdd = {
-        uid: this.getUniqueId,
+        uid: this.getUniqueId(),
         no: this.listLength + 1,
         type: this.form.type,
         category: this.form.category,
@@ -252,6 +252,7 @@ export default {
     },
     updateSpendingHandler() {
       const dataToUpdate = {
+        uid: this.getUniqueId(),
         id: this.data.id,
         type: this.form.type,
         category: this.form.category,
@@ -259,6 +260,7 @@ export default {
         amount: this.form.amount,
         memo: this.form.memo,
       };
+      console.log(dataToUpdate.uid);
       this.updateSpendItem(dataToUpdate);
 
       console.log(this.form.type);
@@ -274,7 +276,9 @@ export default {
   },
   watch: {},
   created() {
-    this.fetchSpendingList();
+    const uUid = this.getUniqueId();
+    console.log(uUid);
+    this.fetchSpendingList(uUid);
   },
 };
 </script>

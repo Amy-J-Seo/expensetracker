@@ -94,12 +94,15 @@ export default {
       this.showModal = true;
     },
     loginHandler() {
+      console.log("loginhandler", this.allUserList);
       const userId = this.allUserList.find(
         (user) => user.userId === this.enteredId
       );
       const userPass = this.allUserList.find(
         (user) => user.userPass === this.enteredPass
       );
+
+      console.log(userId);
       if (userId == undefined || userPass == undefined) {
         (this.enteredId = ""), (this.enteredPass = "");
         alert("Id or Password doesnt match, try again");
@@ -125,6 +128,7 @@ export default {
       this.enteredEmail = "";
       alert("Welcome, now please login :) ");
       this.isRegister = false;
+      this.showModal = false;
     },
   },
   created() {

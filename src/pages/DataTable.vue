@@ -30,7 +30,7 @@
 </template>
 <script>
 import ExpenseEnterForm from "./ExpenseEnterForm.vue";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 
 export default {
   name: "DataTable",
@@ -95,13 +95,15 @@ export default {
     },
   },
   methods: {
+    ...mapGetters("loginStore", ["getUniqueId"]),
     ...mapActions("trackingStore", ["fetchSpendingList", "deleteSpendItem"]),
     editRow(rowIndex) {
       alert(`eidt row number:${rowIndex}`);
     },
     deleteRow(id) {
       console.log(id);
-      this.deleteSpendItem(id);
+      const data = { uid: this.getUniqueId(), id: id };
+      this.deleteSpendItem(data);
       //const itemToRemove = this.totalList.indexOf(id);
       const itemToRemove = this.totalList
         .map(function (e) {
@@ -115,12 +117,13 @@ export default {
       this.formIsVisible = !this.formIsVisible;
     },
     updateFormState(value) {
-      console.log(value);
       this.formIsVisible = value;
     },
   },
   created() {
-    this.fetchSpendingList();
+    const uUid = this.getUniqueId();
+    //console.log(uUid);
+    this.fetchSpendingList(uUid);
   },
   watch: {},
 };

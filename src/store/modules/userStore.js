@@ -43,7 +43,8 @@ const userStore = {
           });
         });
       }
-
+      console.log("userStore response data", response.data);
+      console.log("userStore arr", arr);
       commit("setAllUserList", arr);
       commit("setResponseData", response.data);
     },

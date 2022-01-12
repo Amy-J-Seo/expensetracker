@@ -34,13 +34,13 @@ const trackingStore = {
     },
   },
   actions: {
-    async fetchSpendingList({ commit }) {
-      //need to get logged in user's uid to get data for that user
-      //const userUid = rootState.loginStore.getUniqueId;
-      //console.log(userUid);
+    async fetchSpendingList({ commit }, userUid) {
+      console.log(userUid);
       const response = await axios.get(
-        "https://spedingtracker-94188-default-rtdb.firebaseio.com/spend.json"
+        `https://spedingtracker-94188-default-rtdb.firebaseio.com/users/${userUid}/spend.json`
+        //"https://spedingtracker-94188-default-rtdb.firebaseio.com/spend.json"
       );
+      console.log(response.data);
       let arr = [];
       if (response.data === null) {
         return;
@@ -69,20 +69,21 @@ const trackingStore = {
       );
       commit("addNewSpendItem", data);
     },
-    async deleteSpendItem({ state, commit }, id) {
+    async deleteSpendItem({ state, commit }, data) {
       console.log(state.totalList);
       await axios.delete(
-        // `https://spedingtracker-94188-default-rtdb.firebaseio.com/users/-MtAbKHzBkiVtrT60x7u/spend/-MtB4stl-t3LKV9WFPKb`
-        `https://spedingtracker-94188-default-rtdb.firebaseio.com/spend/${id}.json`
+        `https://spedingtracker-94188-default-rtdb.firebaseio.com/users/${data.uid}/spend/${data.id}.json`
+        // `https://spedingtracker-94188-default-rtdb.firebaseio.com/spend/${id}.json`
       );
       console.log(state.totalList);
-      commit("deleteItem", id);
+      commit("deleteItem", data.id);
     },
     async updateSpendItem({ state, commit }, data) {
       console.log(state.responseData);
       console.log("updating data", data.id);
       await axios.put(
-        `https://spedingtracker-94188-default-rtdb.firebaseio.com/spend/${data.id}.json`,
+        `https://spedingtracker-94188-default-rtdb.firebaseio.com/users/${data.uid}/spend/${data.id}.json`,
+        // `https://spedingtracker-94188-default-rtdb.firebaseio.com/spend/${data.id}.json`,
         data
       );
       commit("editSpendItem", data);

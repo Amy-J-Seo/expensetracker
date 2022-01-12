@@ -6,22 +6,24 @@
         <div slot="exitBtn"></div>
         <div slot="body">
           <h4>Change your password</h4>
-          <label for="oldPass"
-            >Current Password
+          <div>
+            <label for="oldPass">Current Password </label><br />
             <input type="password" />
-          </label>
+          </div>
           <br />
-          <label for="newPass"
-            >New Password
+          <div>
+            <label for="newPass">New Password </label><br />
             <input type="password" />
-          </label>
+          </div>
           <br />
-          <label for="checkPass"
-            >Confirm Password <input type="password" /> </label
-          ><br />
+          <div>
+            <label for="checkPass">Confirm Password </label><br />
+            <input type="password" />
+          </div>
+          <br />
         </div>
         <div slot="footer">
-          <button>Change Password</button>
+          <button class="change_btn">Change Password</button>
         </div>
       </card-ui>
     </div>
@@ -41,4 +43,8 @@ export default {
   watch: {},
 };
 </script>
-<style scoped></style>
+<style scoped>
+.change_btn {
+  margin-top: 20px;
+}
+</style>
