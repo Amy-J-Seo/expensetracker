@@ -357,4 +357,20 @@ export default {
 .hideBtn {
   display: none;
 }
+@media only screen and (max-width: 600px) {
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .card {
+    margin: 20px;
+    padding: 20px;
+    width: 80%;
+    min-height: 250px;
+    border-radius: 10px;
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
+    transition: all 0.2s;
+  }
+}
 </style>

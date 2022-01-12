@@ -1,11 +1,15 @@
 <template>
   <div class="dashboard_container">
-    <summary-expense />
-    <div class="input_area">
-      <ExpenseEnterForm />
-    </div>
-    <div class="tableview_area">
-      <data-table />
+    {{ isLoggedIn }}
+    <p>jellfldskfj</p>
+    <div v-if="isLoggedIn">
+      <summary-expense />
+      <div class="input_area">
+        <ExpenseEnterForm />
+      </div>
+      <div class="tableview_area">
+        <data-table />
+      </div>
     </div>
   </div>
 </template>
@@ -14,6 +18,9 @@
 import ExpenseEnterForm from "./ExpenseEnterForm.vue";
 import DataTable from "./DataTable.vue";
 import SummaryExpense from "./SummaryExpense.vue";
+
+import { mapMutations, mapState } from "vuex";
+
 export default {
   name: "",
   components: {
@@ -24,9 +31,15 @@ export default {
   data() {
     return {};
   },
-  computed: {},
-  methods: {},
-  created() {},
+  computed: {
+    ...mapState("loginStore", ["isLoggedIn"]),
+  },
+  methods: {
+    ...mapMutations("loginStore", ["checkLoginStatus"]),
+  },
+  created() {
+    this.checkLoginStatus();
+  },
   watch: {},
 };
 </script>

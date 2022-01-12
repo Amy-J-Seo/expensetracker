@@ -3,11 +3,15 @@
     <div class="header">
       <div class="header_logo">
         <router-link to="/dataTable"><h2>Expense Tracker</h2></router-link>
-        {{ allUserList }}
       </div>
     </div>
     <div class="header_container">
-      <button class="login_btn" @click="showModal = true">Login</button>
+      <button v-if="isLoggedIn" @click="logOutHandler">Logout</button>
+      <br />
+      <router-link class="userSetting" v-if="isLoggedIn" to="/setting"
+        >Setting</router-link
+      >
+      <button v-else class="login_btn" @click="showModal = true">Login</button>
       <!-- Login modal -->
       <modal v-if="showModal" @close="showModal = false">
         <div slot="header" class="modalHeader">
@@ -28,7 +32,7 @@
             <br />
             <div>
               <label class="input_label" for="userPass"> Password: </label>
-              <input type="password" id="userPass" v-model="enteredpass" />
+              <input type="password" id="userPass" v-model="enteredPass" />
             </div>
             <br />
             <div v-if="isRegister">
@@ -38,7 +42,7 @@
             <br />
             <div v-if="isRegister">
               <label class="input_label" for="userEmail"> userEmail: </label>
-              <input type="password" id="userEmail" v-model="enteredEmail" />
+              <input type="email" id="userEmail" v-model="enteredEmail" />
             </div>
           </div>
         </div>
@@ -57,7 +61,7 @@
 
 <script>
 import Modal from "../UI/Modal.vue";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 
 export default {
   name: "MainHeader",
@@ -75,15 +79,37 @@ export default {
     };
   },
   computed: {
-    ...mapState("userStore", ["allUserList"]),
+    ...mapState("userStore", ["allUserList", "isLoggedIn"]),
+    ...mapState("loginStore", ["isLoggedIn"]),
     modalTitle() {
       return this.isRegister ? "Register" : "Login";
     },
   },
   methods: {
-    ...mapActions("userStore", ["fetchAllUserList"]),
+    ...mapActions("userStore", ["fetchAllUserList", "addNewUser"]),
+    ...mapMutations("loginStore", ["logout", "checkLoginStatus"]),
+    logOutHandler() {
+      this.logout();
+      alert("You are logged out");
+      this.showModal = true;
+    },
     loginHandler() {
-      console.log("clicked");
+      const userId = this.allUserList.find(
+        (user) => user.userId === this.enteredId
+      );
+      const userPass = this.allUserList.find(
+        (user) => user.userPass === this.enteredPass
+      );
+      if (userId == undefined || userPass == undefined) {
+        (this.enteredId = ""), (this.enteredPass = "");
+        alert("Id or Password doesnt match, try again");
+      } else {
+        localStorage.setItem("loginInfo", JSON.stringify(userId));
+
+        this.showModal = false;
+        this.isLoggedIn = true;
+        alert("login successful");
+      }
     },
     registerHandler() {
       const userToAdd = {
@@ -92,11 +118,18 @@ export default {
         userName: this.enteredName,
         userEmail: this.enteredEmail,
       };
-      console.log(userToAdd);
+      this.addNewUser(userToAdd);
+      this.enteredId = "";
+      this.enteredPass = "";
+      this.enteredName = "";
+      this.enteredEmail = "";
+      alert("Welcome, now please login :) ");
+      this.isRegister = false;
     },
   },
   created() {
     this.fetchAllUserList();
+    this.checkLoginStatus();
   },
   watch: {},
 };
@@ -142,5 +175,9 @@ a {
 }
 .modalCloseBtn {
   cursor: pointer;
+}
+.userSetting {
+  all: unset;
+  border: 1px solid grey;
 }
 </style>

@@ -14,7 +14,7 @@ export default {
   },
   computed: {},
   methods: {},
-  created: {},
+  created() {},
   watch: {},
 };
 </script>
@@ -23,6 +23,8 @@ export default {
   display: flex;
   justify-content: space-evenly;
   margin-top: 20px;
+  height: 80px;
+  padding-top: 20px;
 }
 .nav_links {
   text-decoration: none;

@@ -66,13 +66,6 @@ const trackingStore = {
       commit("addNewSpendItem", data);
     },
     async deleteSpendItem({ state, commit }, id) {
-      console.log(state.responseData);
-
-      //   function getKeyByValue(object, value) {
-      //     return Object.keys(object).find((key) => key === value);
-      //   }
-      //   const itemToRemove = getKeyByValue(state.responseData, id);
-
       await axios.delete(
         `https://spedingtracker-94188-default-rtdb.firebaseio.com/spend/${id}.json`
       );

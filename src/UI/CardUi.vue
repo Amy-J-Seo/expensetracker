@@ -1,14 +1,11 @@
 <template>
   <div class="cards">
     <div class="card card-1">
-      <div class="card__icon"><i class="fas fa-bolt"></i></div>
-      <p class="card__exit"><i class="fas fa-times"></i></p>
-      <h2 class="card__title">ddd</h2>
-      <p class="card__apply">
-        <a class="card__link" href="#"
-          >Save<i class="fas fa-arrow-right"></i
-        ></a>
-      </p>
+      <p class="card__exit"><slot name="exitBtn">X</slot></p>
+      <div class="card__title"><slot name="body"> default body </slot></div>
+      <div class="card__apply">
+        <slot name="footer">Something can go here</slot>
+      </div>
     </div>
   </div>
 </template>
@@ -21,7 +18,7 @@ export default {
   },
   computed: {},
   methods: {},
-  created: {},
+  created() {},
   watch: {},
 };
 </script>
@@ -37,8 +34,6 @@ export default {
   padding: 20px;
   width: 500px;
   min-height: 200px;
-  display: grid;
-  grid-template-rows: 20px 50px 1fr 50px;
   border-radius: 10px;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
   transition: all 0.2s;
@@ -53,8 +48,6 @@ export default {
 .card__exit,
 .card__icon {
   position: relative;
-  text-decoration: none;
-  color: rgba(255, 255, 255, 0.9);
 }
 
 .card__link::after {
@@ -73,23 +66,18 @@ export default {
 }
 
 .card__exit {
-  grid-row: 1/2;
   justify-self: end;
 }
 
 .card__icon {
-  grid-row: 2/3;
   font-size: 30px;
 }
 
 .card__title {
-  grid-row: 3/4;
   font-weight: 400;
-  color: #ffffff;
 }
 
 .card__apply {
-  grid-row: 4/5;
   align-self: center;
 }
 .card-3 {

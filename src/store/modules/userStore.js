@@ -27,7 +27,6 @@ const userStore = {
       const response = await axios.get(
         "https://spedingtracker-94188-default-rtdb.firebaseio.com/users.json"
       );
-      console.log(response.data);
       let arr = [];
       if (response.data === null) {
         return;

@@ -6,7 +6,7 @@
         <div class="card__icon"><i class="fas fa-bolt"></i></div>
         <p class="card__exit"><i class="fas fa-times"></i></p>
         <div class="card__title">
-          <h2>This is summary expense of the month</h2>
+          <h2>This is summary of the month</h2>
 
           <div class="detail_summary">
             <p><span>Total Income :</span> $ {{ totalIncome }}</p>
@@ -34,7 +34,6 @@ export default {
         if (item.type === "expense") {
           total = total + parseInt(item.amount);
         }
-        console.log(total);
       });
       return total;
     },
@@ -44,7 +43,6 @@ export default {
         if (item.type === "income") {
           total = total + parseInt(item.amount);
         }
-        console.log(total);
       });
       return total;
     },
@@ -125,5 +123,21 @@ export default {
 }
 .card-3 {
   background-color: lavender;
+}
+@media only screen and (max-width: 600px) {
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .card {
+    margin: 20px;
+    padding: 20px;
+    width: 80%;
+    min-height: 250px;
+    border-radius: 10px;
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
+    transition: all 0.2s;
+  }
 }
 </style>

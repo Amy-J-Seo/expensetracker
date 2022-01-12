@@ -2,20 +2,30 @@
   <div id="app">
     <main-header />
     <sub-header></sub-header>
-    <router-view></router-view>
+    <div v-if="isLoggedIn">
+      {{ isLoggedIn }}
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
 import MainHeader from "./layout/MainHeader.vue";
 import SubHeader from "./layout/SubHeader.vue";
-
+import { mapMutations, mapState } from "vuex";
 export default {
   name: "App",
   components: {
     MainHeader,
     SubHeader,
   },
+  computed: {
+    ...mapState("loginStore", ["isLoggedIn"]),
+  },
+  methods: {
+    ...mapMutations("loginStore", ["checkLoginStatus"]),
+  },
+  created() {},
 };
 </script>
 

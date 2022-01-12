@@ -2,7 +2,7 @@
   <div>
     <div class="title">
       <h1>Your spending list...</h1>
-      <div v-if="!formIsVisible">
+      <div v-if="!formIsVisible" class="btnContainer">
         <button class="addBtn" @click="showForm">
           <font-awesome-icon icon="plus" />
         </button>
@@ -100,8 +100,16 @@ export default {
       alert(`eidt row number:${rowIndex}`);
     },
     deleteRow(id) {
+      console.log(id);
       this.deleteSpendItem(id);
-      this.totalList.splice(id, 1);
+      //const itemToRemove = this.totalList.indexOf(id);
+      const itemToRemove = this.totalList
+        .map(function (e) {
+          return e.id;
+        })
+        .indexOf(id);
+      console.log(itemToRemove);
+      this.totalList.splice(itemToRemove, 1);
     },
     showForm() {
       this.formIsVisible = !this.formIsVisible;
@@ -136,6 +144,22 @@ export default {
   border-radius: 45%;
   height: 50px;
   width: 50px;
+}
+@media only screen and (max-width: 600px) {
+  .title h1 {
+    margin-left: 20px;
+  }
+  .addBtn {
+    cursor: pointer;
+    all: unset;
+    margin-top: 5px;
+    font-size: 20px;
+    color: cornflowerblue;
+    border: 1px solid cornflowerblue;
+    border-radius: 45%;
+    height: 30px;
+    width: 30px;
+  }
 }
 .empty-data {
   display: flex;
