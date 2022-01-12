@@ -183,7 +183,7 @@ Add memo</textarea
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 
 export default {
   name: "ExpenseEnterForm",
@@ -206,6 +206,7 @@ export default {
   },
   computed: {
     ...mapState("trackingStore", ["totalList", "listLength"]),
+    ...mapGetters("loginStore", ["getUniqueId"]),
   },
   methods: {
     ...mapActions("trackingStore", [
@@ -223,6 +224,7 @@ export default {
     },
     addSpendingHandler() {
       const dataToAdd = {
+        uid: this.getUniqueId,
         no: this.listLength + 1,
         type: this.form.type,
         category: this.form.category,

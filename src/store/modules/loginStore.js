@@ -2,8 +2,15 @@ const loginStore = {
   namespaced: true,
   state: {
     isLoggedIn: false,
+    uniqueId: "",
   },
-  getters: {},
+  getters: {
+    getUniqueId(state) {
+      const uid = JSON.parse(localStorage.getItem("loginInfo")).id;
+      state.uniqueId = uid;
+      return state.uniqueId;
+    },
+  },
   mutations: {
     checkLoginStatus: (state) => {
       state.isLoggedIn =

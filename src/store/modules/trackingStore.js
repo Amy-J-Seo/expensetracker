@@ -35,6 +35,9 @@ const trackingStore = {
   },
   actions: {
     async fetchSpendingList({ commit }) {
+      //need to get logged in user's uid to get data for that user
+      //const userUid = rootState.loginStore.getUniqueId;
+      //console.log(userUid);
       const response = await axios.get(
         "https://spedingtracker-94188-default-rtdb.firebaseio.com/spend.json"
       );
@@ -59,14 +62,17 @@ const trackingStore = {
       commit("setResponseData", response.data);
     },
     async addSpendItem({ commit }, data) {
+      console.log(data);
       await axios.post(
-        "https://spedingtracker-94188-default-rtdb.firebaseio.com/spend.json",
+        `https://spedingtracker-94188-default-rtdb.firebaseio.com/users/${data.uid}/spend.json`,
         data
       );
       commit("addNewSpendItem", data);
     },
     async deleteSpendItem({ state, commit }, id) {
+      console.log(state.totalList);
       await axios.delete(
+        // `https://spedingtracker-94188-default-rtdb.firebaseio.com/users/-MtAbKHzBkiVtrT60x7u/spend/-MtB4stl-t3LKV9WFPKb`
         `https://spedingtracker-94188-default-rtdb.firebaseio.com/spend/${id}.json`
       );
       console.log(state.totalList);
