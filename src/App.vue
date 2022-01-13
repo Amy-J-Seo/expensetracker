@@ -2,7 +2,6 @@
   <div id="app">
     <main-header />
     <sub-header></sub-header>
-    {{ getToken }}
     <div v-if="getToken">
       <router-view :key="renderKey"></router-view>
     </div>

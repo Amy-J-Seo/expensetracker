@@ -67,6 +67,7 @@
 <script>
 import Modal from "../UI/Modal.vue";
 import { mapActions, mapState, mapMutations } from "vuex";
+// import router from "../router";
 
 export default {
   name: "MainHeader",
@@ -98,11 +99,10 @@ export default {
       "renderPage",
     ]),
     ...mapMutations("loginStore", ["logout", "checkLoginStatus"]),
-
     logOutHandler() {
       this.logout();
       alert("You are logged out");
-      this.showModal = true;
+      this.$router.go("/");
     },
     loginHandler() {
       console.log("loginhandler", this.allUserList);
@@ -125,6 +125,7 @@ export default {
         this.showModal = false;
         this.isLoggedIn = true;
         alert("login successful");
+        this.$router.go();
       }
     },
     registerHandler() {

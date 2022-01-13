@@ -25,6 +25,7 @@ const trackingStore = {
       state.totalList.filter((list) => list.id !== id);
     },
     editSpendItem: (state, data) => {
+      console.log(state.totalList);
       const itemToUpdate = state.totalList.find((list) => list.id == data.id);
       itemToUpdate.amount = data.amount;
       itemToUpdate.category = data.category;

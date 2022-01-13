@@ -279,6 +279,13 @@ export default {
     const uUid = this.getUniqueId();
     console.log(uUid);
     this.fetchSpendingList(uUid);
+    if (!this.isEditing) {
+      this.form.type = "";
+      this.form.category = "";
+      this.form.date = "";
+      this.form.amount = "";
+      this.form.memo = "";
+    }
   },
 };
 </script>

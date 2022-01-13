@@ -115,6 +115,7 @@ export default {
     },
     showForm() {
       this.formIsVisible = !this.formIsVisible;
+      this.editRowData = {};
     },
     updateFormState(value) {
       this.formIsVisible = value;
