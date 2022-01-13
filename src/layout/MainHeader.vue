@@ -32,7 +32,12 @@
             <br />
             <div>
               <label class="input_label" for="userPass"> Password: </label>
-              <input type="password" id="userPass" v-model="enteredPass" />
+              <input
+                type="password"
+                id="userPass"
+                v-model="enteredPass"
+                @keyup.enter="loginHandler"
+              />
             </div>
             <br />
             <div v-if="isRegister">
@@ -76,18 +81,24 @@ export default {
       enteredName: "",
       enteredEmail: "",
       isRegister: false,
+      renderKey: 1,
     };
   },
   computed: {
-    ...mapState("userStore", ["allUserList", "isLoggedIn"]),
+    ...mapState("userStore", ["allUserList"]),
     ...mapState("loginStore", ["isLoggedIn"]),
     modalTitle() {
       return this.isRegister ? "Register" : "Login";
     },
   },
   methods: {
-    ...mapActions("userStore", ["fetchAllUserList", "addNewUser"]),
+    ...mapActions("userStore", [
+      "fetchAllUserList",
+      "addNewUser",
+      "renderPage",
+    ]),
     ...mapMutations("loginStore", ["logout", "checkLoginStatus"]),
+
     logOutHandler() {
       this.logout();
       alert("You are logged out");
@@ -95,6 +106,7 @@ export default {
     },
     loginHandler() {
       console.log("loginhandler", this.allUserList);
+      console.log(this.allUserList);
       const userId = this.allUserList.find(
         (user) => user.userId === this.enteredId
       );
@@ -108,7 +120,8 @@ export default {
         alert("Id or Password doesnt match, try again");
       } else {
         localStorage.setItem("loginInfo", JSON.stringify(userId));
-
+        this.renderPage(this.renderKey++);
+        console.log("Dont", this.renderKey++);
         this.showModal = false;
         this.isLoggedIn = true;
         alert("login successful");
@@ -133,7 +146,6 @@ export default {
   },
   created() {
     this.fetchAllUserList();
-    this.checkLoginStatus();
   },
   watch: {},
 };

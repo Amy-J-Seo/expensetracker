@@ -2,9 +2,9 @@
   <div id="app">
     <main-header />
     <sub-header></sub-header>
-    <div v-if="isLoggedIn">
-      {{ isLoggedIn }}
-      <router-view></router-view>
+    {{ getToken }}
+    <div v-if="getToken">
+      <router-view :key="renderKey"></router-view>
     </div>
   </div>
 </template>
@@ -21,11 +21,21 @@ export default {
   },
   computed: {
     ...mapState("loginStore", ["isLoggedIn"]),
+    ...mapState("userStore", ["renderKey"]),
+
+    getToken() {
+      return localStorage.getItem("loginInfo") != null &&
+        JSON.parse(localStorage.getItem("loginInfo")).id
+        ? true
+        : false;
+    },
   },
   methods: {
     ...mapMutations("loginStore", ["checkLoginStatus"]),
   },
-  created() {},
+  created() {
+    console.log(this.getToken);
+  },
 };
 </script>
 

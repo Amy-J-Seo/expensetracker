@@ -6,6 +6,7 @@ const userStore = {
     allUserList: [],
     responseData: {},
     userListLength: 0,
+    renderKey: 0,
   },
   getters: {},
   mutations: {
@@ -20,6 +21,13 @@ const userStore = {
     },
     deleteCurrentuser: (state, id) => {
       state.allUserList.filter((user) => user.id !== id);
+    },
+    editUserPass: (state, data) => {
+      console.log(state.allUserList);
+      console.log(data);
+    },
+    incrementKey(state, renderKey) {
+      state.renderKey = renderKey;
     },
   },
   actions: {
@@ -64,6 +72,18 @@ const userStore = {
       );
       console.log(state.totalList);
       commit("deleteCurrentuser", id);
+    },
+    async updateUserPass({ commit }, data) {
+      console.log(data);
+      await axios.put(
+        `https://spedingtracker-94188-default-rtdb.firebaseio.com/users/${data.uUid}/userPass.json`,
+        data.newPass
+      );
+      commit("editUserPass", data);
+    },
+
+    renderPage({ commit }, data) {
+      commit("incrementKey", data);
     },
   },
 };

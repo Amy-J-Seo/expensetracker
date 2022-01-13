@@ -1,7 +1,11 @@
 const loginStore = {
   namespaced: true,
   state: {
-    isLoggedIn: false,
+    isLoggedIn:
+      localStorage.getItem("loginInfo") != null &&
+      JSON.parse(localStorage.getItem("loginInfo")).id
+        ? true
+        : false,
     uniqueId: "",
   },
   getters: {
@@ -12,10 +16,6 @@ const loginStore = {
     },
   },
   mutations: {
-    checkLoginStatus: (state) => {
-      state.isLoggedIn =
-        localStorage.getItem("loginInfo") !== null ? true : false;
-    },
     logout(state) {
       localStorage.removeItem("loginInfo");
       state.isLoggedIn = false;
